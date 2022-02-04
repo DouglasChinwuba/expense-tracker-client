@@ -1,11 +1,12 @@
-<div class="container">
-    <div class="row pt-5">
-        <div class="col-md-4 mx-auto">
-            <div class="card rounded-0">
+<div class="container auth-input d-flex justify-content-center align-items-center">
+    <!-- <div class="row pt-5"> -->
+        <!-- <div class="col-md-4 mx-auto"> -->
+            <!-- <div class="card rounded-0"> -->
+            <div class="w-50 h-50">
                 <div>
                     <h3>Login</h3>
                 </div>
-                <div class="card-body">
+                <!-- <div class="card-body"> -->
                     <form>
                         <div class="form-group mb-2">
                             <input [(ngModel)]="loginUserData.username" name="username" type="text" class="form-control" placeholder="Username">
@@ -15,10 +16,18 @@
                         </div>
                         <button (click)="loginUser()" type="button" class="btn btn-primary col-12">Login</button>
                     </form>
+                <!-- </div> -->
+                <div>
+                    <span class="mr-2">Don't have an account? </span>
+                    <a href="">
+                        <span>Sign up</span>
+                    </a>
                 </div>
             </div>
-        </div>
-    </div>
+                <!-- </div> -->
+            <!-- </div> -->
+        <!-- </div> -->
+    <!-- </div> -->
 </div>
 
 
