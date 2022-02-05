@@ -8,8 +8,12 @@ import { AuthService } from '../services/auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  loginUserData:any = {}
   
+  loginUserData : any = {} ;
+  isLoggedIn : boolean = false;
+  isLoginFailed : boolean = false;
+
+
   constructor(private auth: AuthService) { }
 
   ngOnInit(): void {
@@ -18,8 +22,15 @@ export class LoginComponent implements OnInit {
   loginUser(){
     this.auth.login(this.loginUserData)
     .subscribe(
-      res => console.log(res),
-      err => console.log(err)
+      res => {
+        console.log(res);
+        this.isLoggedIn = true;
+        this.isLoggedIn = true;
+      },
+      err => {
+        console.log(err);
+        this.isLoginFailed = true;
+      }
     )
   }
 

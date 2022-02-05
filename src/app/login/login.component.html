@@ -1,33 +1,64 @@
-<div class="container auth-input d-flex justify-content-center align-items-center">
-    <!-- <div class="row pt-5"> -->
-        <!-- <div class="col-md-4 mx-auto"> -->
-            <!-- <div class="card rounded-0"> -->
-            <div class="w-50 h-50">
-                <div>
-                    <h3>Login</h3>
-                </div>
-                <!-- <div class="card-body"> -->
-                    <form>
-                        <div class="form-group mb-2">
-                            <input [(ngModel)]="loginUserData.username" name="username" type="text" class="form-control" placeholder="Username">
+<div class="container mt-5">
+    <div class="mx-auto col-md-5">
+        <div class="card rounded-0">
+            <div class="card-body">
+                <div class="container auth-input d-flex justify-content-center align-items-center">
+                    <div class="w-50 h-50 m-2">
+                        <div>
+                            <h3>Login</h3>
                         </div>
-                        <div class="form-group mb-2">
-                            <input [(ngModel)]="loginUserData.password" name="password" type="password" class="form-control" placeholder="Password">
-                        </div>
-                        <button (click)="loginUser()" type="button" class="btn btn-primary col-12">Login</button>
-                    </form>
-                <!-- </div> -->
-                <div>
-                    <span class="mr-2">Don't have an account? </span>
-                    <a href="">
-                        <span>Sign up</span>
-                    </a>
+                        <form #loginForm="ngForm" (ngSubmit)="loginUser()" novalidate>
+                            <div class="form-group mb-2">
+                                <input 
+                                    [(ngModel)]="loginUserData.username" 
+                                    name="username" 
+                                    #username="ngModel"
+                                    type="text" class="form-control" 
+                                    minlength="6"
+                                    maxlength="20"
+                                    placeholder="Username"
+                                    required>
+                            </div>
+                
+                            <div class="form-group mb-2">
+                                <input 
+                                    [(ngModel)]="loginUserData.password" 
+                                    name="password" 
+                                    #password="ngModel"
+                                    type="password" 
+                                    minlength="6"
+                                    class="form-control" 
+                                    placeholder="Password"
+                                    required>
+                            </div>
+                
+                            <button 
+                                [disabled]="loginForm.form.invalid" 
+                                type="submit" 
+                                class="btn btn-primary col-12">Log in</button>
+                            
+                            <div *ngIf="loginForm.submitted && isLoginFailed">
+                                <span class="text-danger">Username or password was incorrect. Please try again</span>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-                <!-- </div> -->
-            <!-- </div> -->
-        <!-- </div> -->
-    <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <div class="mx-auto col-md-5">
+        <div class="card rounded-0">
+            <div class="card-body">
+                <div class="text-center">
+                    <span>Don't have an account? </span>
+                    <a routerLink="../signup">Sign up</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
