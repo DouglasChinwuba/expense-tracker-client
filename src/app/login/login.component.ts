@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
   isLoginFailed : boolean = false;
 
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -25,7 +26,8 @@ export class LoginComponent implements OnInit {
       res => {
         console.log(res);
         this.isLoggedIn = true;
-        this.isLoggedIn = true;
+        this.router.navigate(['/dashBoard']);
+
       },
       err => {
         console.log(err);

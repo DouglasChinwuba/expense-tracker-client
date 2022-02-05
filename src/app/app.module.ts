@@ -9,6 +9,7 @@ import { SignupComponent } from './signup/signup.component';
 import { HttpClientModule } from '@angular/common/http'
 import { AuthService } from './services/auth.service';
 import { FormsModule } from '@angular/forms';
+import { DashBoardComponent } from './dash-board/dash-board.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { FormsModule } from '@angular/forms';
     AppComponent,
     HeaderComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    DashBoardComponent
   ],
   imports: [
     BrowserModule,
