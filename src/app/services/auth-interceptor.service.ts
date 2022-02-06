@@ -11,12 +11,25 @@ export class AuthInterceptorService implements HttpInterceptor{
   constructor(private storageService : StorageService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-      let tokenizedRequest = req.clone({
+      
+    if(this.isHeaderNeeded(req.url) || this.storageService.getToken() != null){
+      req = req.clone({
         setHeaders: {
           Authorization: `Bearer ${this.storageService.getToken()}`
         }
       });
-      return next.handle(tokenizedRequest);
+    }
+    
+      return next.handle(req);
+  }
+
+
+  isHeaderNeeded(url : string){
+    if(url === "http://localhost:8080/auth/signup/" || url === "http://localhost:8080/auth/signin"){
+      return false;
+    }else{
+      return true;
+    }
   }
 
 }
