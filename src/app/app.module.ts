@@ -6,10 +6,13 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { AuthService } from './services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { DashBoardComponent } from './dash-board/dash-board.component';
+import { AuthGuard } from './guard/auth.guard';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { StorageService } from './services/storage.service';
 
 
 @NgModule({
@@ -26,7 +29,11 @@ import { DashBoardComponent } from './dash-board/dash-board.component';
     HttpClientModule,
     FormsModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, AuthGuard, StorageService, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
