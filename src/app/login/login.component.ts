@@ -22,14 +22,13 @@ export class LoginComponent implements OnInit {
   }
 
   loginUser(){
-    this.authService.login(this.loginUserData)
+    this.authService.loginUser(this.loginUserData)
     .subscribe(
       res => {
         console.log(res);
         this.isLoggedIn = true;
         this.storageService.saveToken(res.token);
         this.router.navigate(['/dashBoard']);
-
       },
       err => {
         console.log(err);

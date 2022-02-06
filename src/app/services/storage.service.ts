@@ -18,4 +18,8 @@ export class StorageService {
   getToken(){
     return window.sessionStorage.getItem(TOKEN_KEY);
   }
+
+  deleteToken(){
+    window.sessionStorage.removeItem(TOKEN_KEY);
+  }
 }

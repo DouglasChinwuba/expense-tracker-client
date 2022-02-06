@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { StorageService } from './storage.service';
 
@@ -11,14 +12,16 @@ export class AuthService {
   private registerUrl = "http://localhost:8080/auth/signup/";
   private loginUrl = "http://localhost:8080/auth/signin";
 
-  constructor(private http: HttpClient, private storageService: StorageService) { }
+  constructor(private http: HttpClient, 
+              private storageService: StorageService,
+              private router : Router) { }
 
-  login(user: any){
+  loginUser(user: any){
     return this.http.post<any>(this.loginUrl, user)
                 .pipe(catchError(this.errorHandler));
   }
 
-  register(user: any){
+  registerUser(user: any){
     return this.http.post<any>(this.registerUrl, user);
   }
 
@@ -26,7 +29,12 @@ export class AuthService {
     return throwError(error);
   }
   
-  loggedIn(){
+  isLoggedIn(){
     return this.storageService.getToken() ? true : false;
+  }
+
+  logoutUser(){
+    this.storageService.deleteToken();
+    this.router.navigate(['/login']);
   }
 }

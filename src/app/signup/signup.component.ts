@@ -17,7 +17,7 @@ export class SignupComponent implements OnInit {
   }
 
   registerUser(){
-    this.auth.register(this.registerUserData)
+    this.auth.registerUser(this.registerUserData)
       .subscribe(
         res => {
           console.log(res);
