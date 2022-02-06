@@ -6,6 +6,28 @@
         <form #signupForm="ngForm" (ngSubmit)="registerUser()" novalidate>
             <div class="form-group mb-2">
                 <input 
+                    [(ngModel)]="registerUserData.firstname" 
+                    name="firstname" 
+                    type="text" 
+                    class="form-control" 
+                    maxlength="50"
+                    placeholder="Firstname"
+                    required>
+            </div>
+
+            <div class="form-group mb-2">
+                <input 
+                    [(ngModel)]="registerUserData.lastname" 
+                    name="lastname" 
+                    type="text" 
+                    class="form-control" 
+                    maxlength="50"
+                    placeholder="Lastname"
+                    required>
+            </div>
+
+            <div class="form-group mb-2">
+                <input 
                     [(ngModel)]="registerUserData.email" 
                     name="email" 
                     type="text" 
