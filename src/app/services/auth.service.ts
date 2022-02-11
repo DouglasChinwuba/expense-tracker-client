@@ -9,8 +9,8 @@ import { StorageService } from './storage.service';
 })
 export class AuthService {
 
-  private registerUrl = "http://localhost:8080/auth/signup/";
-  private loginUrl = "http://localhost:8080/auth/signin";
+  private registerUrl = "http://localhost:8081/auth/signup/";
+  private loginUrl = "http://localhost:8081/auth/signin";
 
   constructor(private http: HttpClient, 
               private storageService: StorageService,

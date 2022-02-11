@@ -25,7 +25,7 @@ export class AuthInterceptorService implements HttpInterceptor{
 
 
   isHeaderNeeded(url : string){
-    if(url === "http://localhost:8080/auth/signup/" || url === "http://localhost:8080/auth/signin"){
+    if(url === "http://localhost:8081/auth/signup/" || url === "http://localhost:8081/auth/signin"){
       return false;
     }else{
       return true;
