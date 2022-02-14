@@ -10,7 +10,7 @@ import { StorageService } from '../services/storage.service';
 })
 export class LoginComponent implements OnInit {
 
-  
+  user : any = {};
   loginUserData : any = {} ;
   isLoggedIn : boolean = false;
   isLoginFailed : boolean = false;
@@ -28,6 +28,11 @@ export class LoginComponent implements OnInit {
         console.log(res);
         this.isLoggedIn = true;
         this.storageService.saveToken(res.token);
+        this.user.id = res.id;
+        this.user.username = res.username;
+        this.user.email = res.email;
+        this.user.roles = res.roles;
+        this.storageService.saveUser(this.user);
         this.router.navigate(['/dashBoard']);
       },
       err => {

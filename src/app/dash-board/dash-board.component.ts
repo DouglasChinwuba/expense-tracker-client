@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { StorageService } from '../services/storage.service';
 
 @Component({
   selector: 'app-dash-board',
@@ -9,14 +10,22 @@ import { AuthService } from '../services/auth.service';
 })
 
 export class DashBoardComponent implements OnInit {
+  
+  user = this.storageService.getUser();
 
-  private getAccountUrl = "http://localhost:8081/account";
+  getAccountUrl = "http://localhost:8083/account/" + this.user.username;
 
-  user = 
-  constructor(private http : HttpClient) { }
+  constructor(private http : HttpClient, private storageService : StorageService) { }
 
   ngOnInit(): void {
-    this.http.get<any>(this.getAccountUrl, this.user);
+    // console.log(this.user);
+    this.http.get<any>(this.getAccountUrl).subscribe(
+      res => {
+        console.log(res);
+      },err => {
+        console.log(err);
+      }
+    )
   }
 
 }
