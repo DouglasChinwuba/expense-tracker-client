@@ -1,1 +1,46 @@
 <app-header></app-header>
+
+<div class="container">
+    <div>
+        <h2>Hi {{user.firstname}},</h2>
+    </div>
+    <div>
+        <h6>YOUR BALANCE</h6>
+        <h2>${{balance}}</h2>
+    </div>
+    <div class="card rounded-0 mx-auto col-md-5">
+        <div class="container d-flex justify-content-center align-items-center">
+            <div class="">
+                <h4>INCOME</h4>
+                <p class="income-total">${{income}}</p>
+            </div>
+            <div>
+                <h4>EXPENSE</h4>
+                <p class="expense-total">${{expense}}</p>
+            </div>
+        </div>
+    </div>
+
+    <h4>History</h4>
+
+    <h4>Add a new transaction</h4>
+    <div class="w-50 h-50">
+        <form action="">
+            <div class="form-group mb-2">
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    placeholder="Enter description...">
+            </div>
+            <div class="form-group">
+                <input 
+                    type="number" 
+                    class="form-control" 
+                    placeholder="Enter amount...">
+            </div>
+            <button class="btn btn-primary col-12">Add transaction</button>
+        </form>
+    </div>
+</div>
+
+

@@ -12,13 +12,14 @@ import { StorageService } from '../services/storage.service';
 export class DashBoardComponent implements OnInit {
   
   user = this.storageService.getUser();
-
-  getAccountUrl = "http://localhost:8083/account/" + this.user.username;
+  getAccountUrl = "http://localhost:8081/account/" + this.user.username;
+  balance = 0.00;
+  income = 0.00;
+  expense = 0.00;
 
   constructor(private http : HttpClient, private storageService : StorageService) { }
 
   ngOnInit(): void {
-    // console.log(this.user);
     this.http.get<any>(this.getAccountUrl).subscribe(
       res => {
         console.log(res);
@@ -27,5 +28,4 @@ export class DashBoardComponent implements OnInit {
       }
     )
   }
-
 }

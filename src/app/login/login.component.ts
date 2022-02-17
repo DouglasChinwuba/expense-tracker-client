@@ -29,6 +29,8 @@ export class LoginComponent implements OnInit {
         this.isLoggedIn = true;
         this.storageService.saveToken(res.token);
         this.user.id = res.id;
+        this.user.firstname = res.firstname;
+        this.user.lastname = res.lastname;
         this.user.username = res.username;
         this.user.email = res.email;
         this.user.roles = res.roles;
@@ -41,6 +43,4 @@ export class LoginComponent implements OnInit {
       }
     )
   }
-
-
 }
