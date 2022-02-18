@@ -35,6 +35,7 @@ export class AuthService {
 
   logoutUser(){
     this.storageService.deleteToken();
+    this.storageService.deleteUser();
     this.router.navigate(['/login']);
   }
 }

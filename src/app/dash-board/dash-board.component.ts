@@ -16,16 +16,42 @@ export class DashBoardComponent implements OnInit {
   balance = 0.00;
   income = 0.00;
   expense = 0.00;
+  currentDate = new Date().toDateString();
+  userAccount = {}; 
+  transactions : any = [];
 
   constructor(private http : HttpClient, private storageService : StorageService) { }
 
   ngOnInit(): void {
     this.http.get<any>(this.getAccountUrl).subscribe(
       res => {
-        console.log(res);
+        this.userAccount = res;
+        console.log(this.userAccount);
+        this.populateTransactions(this.userAccount);
+        console.log(this.transactions);
       },err => {
         console.log(err);
       }
     )
   }
+
+  populateTransactions(userAccount: any){
+    for(let transaction of userAccount.incomes){
+      this.transactions.push(transaction);
+    }
+    for(let transaction of userAccount.expenses){
+      this.transactions.push(transaction);
+    }
+    this.transactions.sort(function(a:any, b:any){
+      let c: any = new Date(a.date);
+      let d: any = new Date(b.date);
+      return c-d;
+    });
+  }
+
+
+
+
+
+
 }
