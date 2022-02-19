@@ -44,7 +44,11 @@
 
     <h4 class="mt-5 text-center">History</h4>
 
-    <p *ngFor="let t of transactions">{{t.description}}</p>
+    <div>
+        <app-transaction 
+                *ngFor="let transaction of transactions"
+                [transaction] = "transaction"></app-transaction>
+    </div>
 
     <h4 class="mt-5 text-center">Add a new transaction</h4>
     <div class="mt-4">
