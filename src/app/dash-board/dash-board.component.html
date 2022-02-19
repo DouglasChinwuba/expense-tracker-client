@@ -5,9 +5,9 @@
         <h2 class="col-6">Hi {{user.firstname}},</h2>
         <h2 class="col-6 text-end">{{currentDate}}</h2>
     </div>
-    <div class="mt-4">
+    <div class="mt-4 mb-3">
         <h6 class="text-center">YOUR BALANCE</h6>
-        <h2 class="text-center">${{balance}}</h2>
+        <h1 class="text-center">${{balance}}</h1>
     </div>
 
     <div class="row">
@@ -15,11 +15,11 @@
             <div class="card shadow">
                 <div class="card-body bg-success bg-gradient text-white">
                     <div class="d-flex">
-                        <div class="">
-                            <h1>${{income}}</h1>
-                        </div>
-                        <div class="ms-3 align-items-center">
+                        <div class="my-auto">
                             <h4>Income</h4>
+                        </div>
+                        <div class="ms-auto">
+                            <h1>${{income}}</h1>
                         </div>
                     </div>
                 </div>
@@ -30,11 +30,11 @@
             <div class="card shadow">
                 <div class="card-body bg-danger bg-gradient text-white">
                     <div class="d-flex">
-                        <div class="">
-                            <h1>${{income}}</h1>
-                        </div>
-                        <div class="ms-3 align-items-center">
+                        <div class="my-auto">
                             <h4>Expense</h4>
+                        </div>
+                        <div class="ms-auto">
+                            <h1>${{expense}}</h1>
                         </div>
                     </div>
                 </div>
@@ -43,6 +43,8 @@
     </div>
 
     <h4 class="mt-5 text-center">History</h4>
+
+    <p *ngFor="let t of transactions">{{t.description}}</p>
 
     <h4 class="mt-5 text-center">Add a new transaction</h4>
     <div class="mt-4">

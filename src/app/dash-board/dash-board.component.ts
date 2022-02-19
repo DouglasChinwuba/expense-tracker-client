@@ -13,9 +13,9 @@ export class DashBoardComponent implements OnInit {
   
   user = this.storageService.getUser();
   getAccountUrl = "http://localhost:8081/account/" + this.user.username;
-  balance = 0.00;
-  income = 0.00;
-  expense = 0.00;
+  balance = 100.00;
+  income = 100.00;
+  expense = 500.00;
   currentDate = new Date().toDateString();
   userAccount = {}; 
   transactions : any = [];
