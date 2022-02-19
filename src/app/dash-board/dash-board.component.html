@@ -9,16 +9,34 @@
         <h6 class="text-center">YOUR BALANCE</h6>
         <h2 class="text-center">${{balance}}</h2>
     </div>
-    <div class="card rounded-0">
-        <div class="container">
-            <div class="row">
-                <div class="col-6 mt-2">
-                    <h4 class="text-center">INCOME</h4>
-                    <p class="income-total">${{income}}</p>
+
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="card shadow">
+                <div class="card-body bg-success bg-gradient text-white">
+                    <div class="d-flex">
+                        <div class="">
+                            <h1>${{income}}</h1>
+                        </div>
+                        <div class="ms-3 align-items-center">
+                            <h4>Income</h4>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-6 mt-2 "> 
-                    <h4 class="text-center">EXPENSE</h4>
-                    <p class="expense-total">${{expense}}</p>
+            </div>
+        </div>
+
+        <div class="col-xl-6">
+            <div class="card shadow">
+                <div class="card-body bg-danger bg-gradient text-white">
+                    <div class="d-flex">
+                        <div class="">
+                            <h1>${{income}}</h1>
+                        </div>
+                        <div class="ms-3 align-items-center">
+                            <h4>Expense</h4>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
