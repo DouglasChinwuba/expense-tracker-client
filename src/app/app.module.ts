@@ -13,8 +13,6 @@ import { DashBoardComponent } from './dash-board/dash-board.component';
 import { AuthGuard } from './guard/auth.guard';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { StorageService } from './services/storage.service';
-import { TransactionComponent } from './transaction/transaction.component';
-
 
 @NgModule({
   declarations: [
@@ -24,8 +22,7 @@ import { TransactionComponent } from './transaction/transaction.component';
 
     
     SignupComponent,
-    DashBoardComponent,
-    TransactionComponent
+    DashBoardComponent
   ],
   imports: [
     BrowserModule,

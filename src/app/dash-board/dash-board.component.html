@@ -7,7 +7,7 @@
     </div>
     <div class="mt-4 mb-3">
         <h6 class="text-center">YOUR BALANCE</h6>
-        <h1 class="text-center">${{balance}}</h1>
+        <h1 class="text-center">${{accountService.getBalance()}}</h1>
     </div>
 
     <div class="row">
@@ -19,7 +19,7 @@
                             <h4>Income</h4>
                         </div>
                         <div class="ms-auto">
-                            <h1>${{income}}</h1>
+                            <h1>${{accountService.getIncome()}}</h1>
                         </div>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                             <h4>Expense</h4>
                         </div>
                         <div class="ms-auto">
-                            <h1>${{expense}}</h1>
+                            <h1>${{accountService.getExpense()}}</h1>
                         </div>
                     </div>
                 </div>
@@ -44,32 +44,64 @@
 
     <h4 class="mt-5 text-center">History</h4>
 
-    <div>
-        <app-transaction 
-                *ngFor="let transaction of transactions"
-                [transaction] = "transaction"></app-transaction>
+    <div class="row mt-4">
+        <div class="col-xl-6 mx-auto">
+            <div class="container">
+                <div>
+                    <div *ngFor="let item of accountService.getAllDates() | keyvalue">
+                        <div class="card-body">
+                            <p class="card-title">{{item.key | date:'fullDate'}}</p>
+                        </div>
+                        <ul *ngFor="let transaction of item.value" class="list-group list-group-flush">
+                            <li class="list-group-item"
+                                [ngStyle]="{borderRight: transaction.amount < 0 ? '5px solid #dc3545' : '5px solid #198754'}">
+                                <span>{{transaction.description}}</span>
+                                <span *ngIf="transaction.amount < 0" style="float:right">-${{math.abs(transaction.amount)}}</span>
+                                <span *ngIf="transaction.amount > 0" style="float:right">${{transaction.amount}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <h4 class="mt-5 text-center">Add a new transaction</h4>
     <div class="mt-4">
-        <form action="">
+        <form #transactionForm="ngForm" (onSubmit)="addTransaction()" novalidate>
             <div class="form-group col-6 mb-2 mx-auto">
                 <label for="">Description</label>
                 <input 
                     type="text" 
+                    name="description"
                     class="form-control" 
-                    placeholder="Enter description...">
+                    placeholder="Enter description..."
+                    maxlength="50">
             </div>
         
-            <div class="form-group col-6 mx-auto">
+            <div class="form-group col-6 mb-2 mx-auto">
                 <label for="">Amount</label>
                 <input 
                     type="number" 
+                    name="amount"
                     class="form-control" 
-                    placeholder="Enter amount...">
+                    placeholder="Enter amount..."
+                    min="0"
+                    max=""
+                    ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/">
             </div>
+
+            <div class="form-group col-6 mb-4 mx-auto">
+                <label for="">Income or Expense</label>
+                <select class="form-select">
+                    <option selected>Select an option</option>
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
+            </div>
+
            <div class="col text-center">
-               <button class="btn btn-primary col-6 mt-4">Add transaction</button>
+               <button class="btn btn-primary col-6">Add transaction</button>
            </div>
         </form>
     </div>

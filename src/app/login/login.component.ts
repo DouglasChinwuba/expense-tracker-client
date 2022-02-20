@@ -16,7 +16,9 @@ export class LoginComponent implements OnInit {
   isLoginFailed : boolean = false;
 
 
-  constructor(private authService: AuthService, private router: Router, private storageService: StorageService) { }
+  constructor(private authService: AuthService, 
+              private router: Router, 
+              private storageService: StorageService) { }
 
   ngOnInit(): void {
   }
@@ -25,7 +27,7 @@ export class LoginComponent implements OnInit {
     this.authService.loginUser(this.loginUserData)
     .subscribe(
       res => {
-        console.log(res);
+        // console.log(res);
         this.isLoggedIn = true;
         this.storageService.saveToken(res.token);
         this.user.id = res.id;

@@ -29,7 +29,7 @@ export class AuthService {
     return throwError(error);
   }
   
-  isLoggedIn(){
+  isLoggedIn(){  
     return this.storageService.getToken() ? true : false;
   }
 
