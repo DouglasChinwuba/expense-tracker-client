@@ -70,38 +70,64 @@
     <div class="mt-4">
         <form #transactionForm="ngForm" (onSubmit)="addTransaction()" novalidate>
             <div class="form-group col-6 mb-2 mx-auto">
-                <label for="">Description</label>
+                <label>Description</label>
                 <input 
                     type="text" 
                     name="description"
+                    #description="ngModel"
                     class="form-control" 
                     placeholder="Enter description..."
-                    maxlength="50">
+                    maxlength="50"
+                    [(ngModel)]="currentTransaction.description"
+                    [class.is-invalid]="description.invalid && description.touched"
+                    required>
+                    
+                    <small class="text-danger"
+                        [class.d-none]="description.valid || description.untouched">Transaction desctiption is required</small>
             </div>
         
             <div class="form-group col-6 mb-2 mx-auto">
-                <label for="">Amount</label>
+                <label>Amount</label>
                 <input 
                     type="number" 
                     name="amount"
+                    #amount="ngModel"
+                    pattern="^[0-9]+(\.[0-9]{1,2})?$"
                     class="form-control" 
                     placeholder="Enter amount..."
                     min="0"
-                    max=""
-                    ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/">
+                    [(ngModel)]="currentTransaction.amount"
+                    [class.is-invalid]="amount.invalid && amount.touched"
+                    required>
+
+                    <small class="text-danger"
+                        [class.d-none]="amount.valid || amount.untouched">Invalid</small>
             </div>
 
             <div class="form-group col-6 mb-4 mx-auto">
-                <label for="">Income or Expense</label>
-                <select class="form-select">
-                    <option selected>Select an option</option>
-                    <option value="income">Income</option>
-                    <option value="expense">Expense</option>
+                <label>Income or Expense</label>
+                <select 
+                    (blur)="validateTransactionType(transactionType.value)"
+                    (change)="validateTransactionType(transactionType.value)"
+                    #transactionType="ngModel"
+                    [class.is-invalid]="transactionTypeHasError && transactionType.touched"
+                    class="form-select"
+                    name="transactionType"
+                    [(ngModel)]="currentTransaction.transactionType">
+                    <option value="default">Select an option</option>
+                    <option>Income</option>
+                    <option>Expense</option>
                 </select>
+                <small 
+                    class="text-danger" 
+                    [class.d-none]="!transactionTypeHasError || transactionType.untouched">Please select a transaction type</small>
             </div>
 
            <div class="col text-center">
-               <button class="btn btn-primary col-6">Add transaction</button>
+               <button 
+                    class="btn btn-primary col-6"
+                    [disabled]="transactionForm.form.invalid"
+                    type="submit" >Add transaction</button>
            </div>
         </form>
     </div>

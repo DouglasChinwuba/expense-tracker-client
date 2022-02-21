@@ -11,6 +11,7 @@ export class AccountService {
   private transactions : any = [];
   private allDates : {[key: string] : Array<any> } = {};
 
+
   constructor() { }
 
   getBalance(){

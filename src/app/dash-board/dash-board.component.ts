@@ -13,10 +13,11 @@ export class DashBoardComponent implements OnInit {
   
   user = this.storageService.getUser();
   getAccountUrl = "http://localhost:8081/account/" + this.user.username;
- 
   currentDate = new Date().toDateString();
+  currentTransaction = {description : "", amount : 0.00, transactionType : ""};
   userAccount = {};
-  math = Math; 
+  math = Math;
+  transactionTypeHasError = true;
 
   constructor(private http : HttpClient, 
               private storageService : StorageService,
@@ -58,9 +59,15 @@ export class DashBoardComponent implements OnInit {
   }
 
   addTransaction(){
-    
+
   }
 
-
+  validateTransactionType(value : string){
+    if(value === 'default'){
+      this.transactionTypeHasError = true;
+    }else{
+      this.transactionTypeHasError = false;
+    }
+  }
 
 }
