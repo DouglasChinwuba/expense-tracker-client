@@ -8,9 +8,7 @@ export class AccountService {
   private balance = 0.00;
   private income = 0.00;
   private expense = 0.00;
-  private transactions : any = [];
   private allDates : {[key: string] : Array<any> } = {};
-
 
   constructor() { }
 
@@ -26,10 +24,6 @@ export class AccountService {
     return this.expense;
   }
 
-  getTransactions(){
-    return this.transactions;
-  }
-
   getAllDates(){
     return this.allDates;
   }
@@ -38,7 +32,6 @@ export class AccountService {
     this.balance = 0.00;
     this.income = 0.00;
     this.expense = 0.00;
-    this.transactions = [];
     this.allDates = {};
   }
 }

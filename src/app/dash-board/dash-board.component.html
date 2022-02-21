@@ -48,16 +48,16 @@
         <div class="col-xl-6 mx-auto">
             <div class="container">
                 <div>
-                    <div *ngFor="let item of accountService.getAllDates() | keyvalue">
+                    <div *ngFor="let item of accountService.getAllDates() | keyvalue : originalOrder">
                         <div class="card-body">
                             <p class="card-title">{{item.key | date:'fullDate'}}</p>
                         </div>
                         <ul *ngFor="let transaction of item.value" class="list-group list-group-flush">
                             <li class="list-group-item"
-                                [ngStyle]="{borderRight: transaction.amount < 0 ? '5px solid #dc3545' : '5px solid #198754'}">
+                                [ngStyle]="{borderRight: transaction.type === 'Expense' ? '5px solid #dc3545' : '5px solid #198754'}">
                                 <span>{{transaction.description}}</span>
-                                <span *ngIf="transaction.amount < 0" style="float:right">-${{math.abs(transaction.amount)}}</span>
-                                <span *ngIf="transaction.amount > 0" style="float:right">${{transaction.amount}}</span>
+                                <span *ngIf="transaction.type === 'Expense'" style="float:right">-${{math.abs(transaction.amount)}}</span>
+                                <span *ngIf="transaction.type === 'Income'" style="float:right">${{transaction.amount}}</span>
                             </li>
                         </ul>
                     </div>
@@ -68,7 +68,7 @@
 
     <h4 class="mt-5 text-center">Add a new transaction</h4>
     <div class="mt-4">
-        <form #transactionForm="ngForm" (onSubmit)="addTransaction()" novalidate>
+        <form #transactionForm="ngForm" (ngSubmit)="addTransaction(); resetForm(transactionForm)" novalidate>
             <div class="form-group col-6 mb-2 mx-auto">
                 <label>Description</label>
                 <input 
@@ -113,7 +113,7 @@
                     [class.is-invalid]="transactionTypeHasError && transactionType.touched"
                     class="form-select"
                     name="transactionType"
-                    [(ngModel)]="currentTransaction.transactionType">
+                    [(ngModel)]="currentTransaction.type">
                     <option value="default">Select an option</option>
                     <option>Income</option>
                     <option>Expense</option>
@@ -122,11 +122,11 @@
                     class="text-danger" 
                     [class.d-none]="!transactionTypeHasError || transactionType.untouched">Please select a transaction type</small>
             </div>
-
-           <div class="col text-center">
+            
+            <div class="col text-center">
                <button 
                     class="btn btn-primary col-6"
-                    [disabled]="transactionForm.form.invalid"
+                    [disabled]="transactionForm.form.invalid || transactionTypeHasError"
                     type="submit" >Add transaction</button>
            </div>
         </form>
