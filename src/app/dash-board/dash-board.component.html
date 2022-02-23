@@ -15,7 +15,7 @@
             <div class="card shadow">
                 <div class="card-body bg-success bg-gradient text-white">
                     <div class="d-flex">
-                        <div class="my-auto">
+                        <div #thing class="my-auto">
                             <h4>Income</h4>
                         </div>
                         <div class="ms-auto">
@@ -48,44 +48,23 @@
         <div class="col-xl-12 mx-auto">
             <div class="container">
                 <div>
-                    <table *ngFor="let item of accountService.getAllDates() | keyvalue : originalOrder" class="mx-auto">
-                        <tbody>
+                    <table #transactionContainer (mouseover)="showDeleteButton()" (mouseout)="clearDeleteButton()" class="mx-auto">
+                        <tbody *ngFor="let item of accountService.getAllDates() | keyvalue : originalOrder">
                             <tr>
                                 <td class="date" colspan="2">{{item.key | date:'fullDate'}}</td>
                             </tr>
-                            <tr *ngFor="let transaction of item.value" (mouseover)="deleteButton()" (mouseout)="deleteButton()">
+                            <tr class="transaction-row" *ngFor="let transaction of item.value">
                                 <td class="transaction"> 
                                     <span>{{transaction.description}}</span>
                                     <span *ngIf="transaction.type === 'Expense'" style="float:right">-${{math.abs(transaction.amount)}}</span>
                                     <span *ngIf="transaction.type === 'Income'" style="float:right">${{transaction.amount}}</span>
                                 </td>
-                                <td class="delete">
-                                    <i *ngIf="displayDeleteButton" class="bi-2x bi-x delete"></i>
+                                <td class="btn-delete-td">
+                                    <i class="bi-2x bi-x btn-delete hidden"></i>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-
-
-                    <!-- <div *ngFor="let item of accountService.getAllDates() | keyvalue : originalOrder " class="col-xl-6 mx-auto">
-                        <div class="card-body">
-                            <p class="card-title">{{item.key | date:'fullDate'}}</p>
-                        </div>
-                        <ul *ngFor="let transaction of item.value" class="list-group list-group-flush"
-                            (mouseover)="deleteButton()" (mouseout)="deleteButton()" class="list-inline">
-                            <li class="list-group-item"
-                                [ngStyle]="{borderRight: transaction.type === 'Expense' ? '5px solid #dc3545' : '5px solid #198754'}">
-                                <span>{{transaction.description}}</span>
-                                <span *ngIf="transaction.type === 'Expense'" style="float:right">-${{math.abs(transaction.amount)}}</span>
-                                <span *ngIf="transaction.type === 'Income'" style="float:right">${{transaction.amount}}</span>
-                            </li>
-                            <li>
-                                <button *ngIf="displayDeleteButton" type="button" class="btn btn-outline-secondary pull-right">
-                                    <i class="bi bi-x"></i>
-                                </button>
-                            </li>
-                        </ul>
-                    </div> -->
                 </div>
             </div>
         </div>

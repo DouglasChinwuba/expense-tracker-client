@@ -1,6 +1,6 @@
 import { KeyValue } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AccountService } from '../services/account.service';
 import { StorageService } from '../services/storage.service';
@@ -20,7 +20,7 @@ export class DashBoardComponent implements OnInit {
   userAccount : any = {};
   math = Math;
   transactionTypeHasError = true;
-  displayDeleteButton = false;
+  @ViewChild('transactionContainer') transactionContainer!: ElementRef<HTMLTableSectionElement>;
 
   constructor(private http : HttpClient, 
               private storageService : StorageService,
@@ -40,6 +40,7 @@ export class DashBoardComponent implements OnInit {
       }
     )
   }
+
 
   populateTransDates(){
     for(let transaction of this.userAccount.transactions){
@@ -93,8 +94,17 @@ export class DashBoardComponent implements OnInit {
     this.accountService.setBalance(totalIncome - totalExpense); 
   }
 
-  deleteButton(){
-    this.displayDeleteButton = !this.displayDeleteButton;
+  showDeleteButton(){
+    this.transactionContainer.nativeElement.addEventListener("mouseover", function(e:any){
+      const transactionRow = e.target.closest("tr");
+      transactionRow.querySelector(".btn-delete").classList.remove("hidden")
+    }); 
   }
 
+  clearDeleteButton(){
+    this.transactionContainer.nativeElement.addEventListener("mouseout", function(e:any){
+      const transactionRow = e.target.closest("tr");
+      transactionRow.querySelector(".btn-delete").classList.add("hidden")
+    }); 
+  }
 }

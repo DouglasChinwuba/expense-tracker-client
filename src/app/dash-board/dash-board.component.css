@@ -22,9 +22,13 @@ td{
 }
 
 .transaction{
-    width: 400px;
+    width: 500px;
 }
 
-.delete{
+.btn-delete-td{
     background-color: #F5F7FA;
+}
+
+.btn-delete{
+    cursor: pointer;
 }
