@@ -1,0 +1,30 @@
+table, td, th {
+    /* border: 1px solid black; */
+}
+  
+table {
+    border-collapse: collapse;
+    width: 50%;
+}
+
+td{
+    background-color: white;
+    /* width: auto; */
+    height: 40px;
+}
+
+.hidden {
+    display: none;
+}
+
+.date{
+    background-color: #F5F7FA;
+}
+
+.transaction{
+    width: 400px;
+}
+
+.delete{
+    background-color: #F5F7FA;
+}

@@ -20,6 +20,7 @@ export class DashBoardComponent implements OnInit {
   userAccount : any = {};
   math = Math;
   transactionTypeHasError = true;
+  displayDeleteButton = false;
 
   constructor(private http : HttpClient, 
               private storageService : StorageService,
@@ -30,9 +31,10 @@ export class DashBoardComponent implements OnInit {
     this.http.get<any>(this.getAccountUrl).subscribe(
       res => {
         this.userAccount = res;
-        console.log(this.userAccount);
+        // console.log(this.userAccount);
         this.populateTransDates();
-        console.log(this.accountService.getAllDates())
+        // console.log(this.accountService.getAllDates())
+        this.updateAccountStatus();
       },err => {
         console.log(err);
       }
@@ -51,6 +53,7 @@ export class DashBoardComponent implements OnInit {
      this.currentTransaction.date = new Date().toDateString();
      this.accountService.getAllDates()[this.currentTransaction.date] ??= [];
      this.accountService.getAllDates()[this.currentTransaction.date].push(this.currentTransaction);
+     this.updateAccountStatus();
      console.log(this.accountService.getAllDates());
   }
 
@@ -71,5 +74,27 @@ export class DashBoardComponent implements OnInit {
     return 0;
   }
 
+  updateAccountStatus(){
+    let allTransactions : Array<any> = Object.values(this.accountService.getAllDates());
+
+    let totalIncome : number = allTransactions.reduce((a,b) => a.concat(b), [])
+                                              .filter((trans:any) => trans.type === 'Income')
+                                              .map((trans:any) => trans.amount)
+                                              .reduce((previousValue:any,currentValue:any) => previousValue + currentValue, 0);
+
+
+    let totalExpense : number = allTransactions.reduce((a,b) => a.concat(b), [])
+                                               .filter((trans:any) => trans.type === 'Expense')
+                                               .map((trans:any) => trans.amount)
+                                               .reduce((previousValue:any, currentValue:any) => previousValue + currentValue, 0);
+
+    this.accountService.setIncome(totalIncome);
+    this.accountService.setExpense(totalExpense);
+    this.accountService.setBalance(totalIncome - totalExpense); 
+  }
+
+  deleteButton(){
+    this.displayDeleteButton = !this.displayDeleteButton;
+  }
 
 }

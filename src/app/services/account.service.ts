@@ -5,9 +5,9 @@ import { Injectable } from '@angular/core';
 })
 export class AccountService {
 
-  private balance = 0.00;
-  private income = 0.00;
-  private expense = 0.00;
+  private balance : number = 0.00;
+  private income : number = 0.00;
+  private expense : number = 0.00;
   private allDates : {[key: string] : Array<any> } = {};
 
   constructor() { }
@@ -22,6 +22,18 @@ export class AccountService {
 
   getExpense(){
     return this.expense;
+  }
+
+  setBalance(balance : number){
+    this.balance = balance;
+  }
+
+  setIncome(income : number){
+    this.income = income;
+  }
+
+  setExpense(expense : number){
+    this.expense = expense;
   }
 
   getAllDates(){
