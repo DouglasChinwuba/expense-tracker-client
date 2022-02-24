@@ -55,7 +55,7 @@
                                 <td class="date" colspan="2">{{item.key | date:'fullDate'}}</td>
                             </tr>
                             <tr class="transaction-row" *ngFor="let transaction of item.value" 
-                                [attr.data-rowId]="transaction.rowId"
+                                [attr.data-rowid]="transaction.rowId"
                                 [attr.data-date]="getDateString(transaction.date)">
                                 <td class="transaction"
                                     [ngStyle]="{borderRight: transaction.type === 'Expense' ? '5px solid #dc3545' : '5px solid #198754'}"> 
@@ -64,7 +64,7 @@
                                     <span *ngIf="transaction.type === 'Income'" class="trans-span-amount">${{transaction.amount}}</span>
                                 </td>
                                 <td class="btn-delete-td">
-                                    <i class="bi-2x bi-x btn-delete hidden"></i>
+                                    <i class="bi-2x bi-x btn-delete hidden" (click)="deleteTransaction()"></i>
                                 </td>
                             </tr>
                         </tbody>

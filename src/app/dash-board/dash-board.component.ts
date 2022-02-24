@@ -148,7 +148,30 @@ export class DashBoardComponent implements OnInit {
   }
 
 
-  onDeleteBtnClicked(){
+  /**
+   * Delete transaction row when delete button is clicked 
+   */
+  deleteTransaction(){
+    let self = this;
+    this.transactionContainer.nativeElement.addEventListener("click", function(e:any){
+      if(e.target.classList.contains("btn-delete") || e.target.classList.contains("btn-delete-td")){
+        const tr = e.target.closest("tr");
+        console.log(parseInt(tr.dataset.rowid), tr.dataset.date);
+        self.removeTransFromMap(parseInt(tr.dataset.rowid), tr.dataset.date);
+      }
+    });
+  }
 
+
+  /**
+   * Delete transaction from map of date and transaction 
+   */
+  removeTransFromMap(rowid:Number, date:string){
+    this.accountService.getAllDates()[date] = this.accountService.getAllDates()[date]
+                                                  .filter(trans => trans.rowId != rowid);
+
+    if(this.accountService.getAllDates()[date].length === 0){
+      delete this.accountService.getAllDates()[date];
+    } 
   }
 }
