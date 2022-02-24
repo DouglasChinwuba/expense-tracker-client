@@ -21,6 +21,7 @@ export class DashBoardComponent implements OnInit {
   math = Math;
   transactionTypeHasError = true;
   currentRowId = 0;
+  currentTransId = 0;
   @ViewChild('transactionContainer') transactionContainer!: ElementRef<HTMLTableSectionElement>;
 
   constructor(private http : HttpClient, 
@@ -34,7 +35,7 @@ export class DashBoardComponent implements OnInit {
         this.userAccount = res;
         // console.log(this.userAccount);
         this.populateTransDates();
-        console.log(this.accountService.getAllDates())
+        // console.log(this.accountService.getAllDates())
         this.updateAccountStatus();
       },err => {
         console.log(err);
@@ -53,22 +54,44 @@ export class DashBoardComponent implements OnInit {
       this.accountService.getAllDates()[formattedDate] ??= [];
       this.accountService.getAllDates()[formattedDate].push(transaction);
     }
-  }
-
-  getDateString(date: string){
-    return new Date(date).toDateString();
+    this.currentTransId = this.userAccount.transactions[this.userAccount.transactions.length - 1].id;
+    this.currentTransId++;
   }
 
   /**
-   * Adds new transaction to allDates map on add transaction button clicked
+   * Convert dateISO to dateString
+   * @param {string} dateISO 
+   * @returns {string} dateString 
+   */
+  getDateString(dateISO: string){
+    let dateString = new Date(dateISO).toDateString();
+    return dateString;
+  }
+
+  /**
+   * Adds new transaction to allDates map and userAccount on add transaction button clicked
    */
   addTransaction(){
-     this.currentTransaction.date = new Date().toDateString();
-     this.currentTransaction.rowId = this.getNextRowId();
-     this.accountService.getAllDates()[this.currentTransaction.date] ??= [];
-     this.accountService.getAllDates()[this.currentTransaction.date].push(this.currentTransaction);
-     this.updateAccountStatus();
-     console.log(this.accountService.getAllDates());
+    this.currentTransaction.date = new Date().toISOString();
+    this.currentTransaction.rowId = this.getNextRowId();
+    this.currentTransaction.id = this.currentTransId;
+    let formattedDate = this.getDateString(this.currentTransaction.date);
+    this.accountService.getAllDates()[formattedDate] ??= [];
+    this.accountService.getAllDates()[formattedDate].push(this.currentTransaction);
+    this.addTransactionToUserAccount(this.currentTransaction);
+    this.updateAccountStatus();
+    this.currentTransId++;
+    console.log(this.accountService.getAllDates());
+  }
+
+  /**
+   * Get next row id
+   * @returns {Number} nextId
+   */
+   getNextRowId(){
+    let nextId = this.currentRowId;
+    this.currentRowId++;
+    return nextId;
   }
 
   /**
@@ -94,15 +117,9 @@ export class DashBoardComponent implements OnInit {
   }
 
   /**
-   * Get next row id
-   * @returns {Number} nextId
+   * resets transaction form 
+   * @param {NgForm} form 
    */
-  getNextRowId(){
-    let nextId = this.currentRowId;
-    this.currentRowId++;
-    return nextId;
-  }
-
   resetForm(form: NgForm){
     this.currentTransaction = {};
     form.reset();
@@ -156,9 +173,10 @@ export class DashBoardComponent implements OnInit {
     this.transactionContainer.nativeElement.addEventListener("click", function(e:any){
       if(e.target.classList.contains("btn-delete") || e.target.classList.contains("btn-delete-td")){
         const tr = e.target.closest("tr");
-        console.log(parseInt(tr.dataset.rowid), tr.dataset.date);
         self.removeTransFromMap(parseInt(tr.dataset.rowid), tr.dataset.date);
+        self.deleteTransactionFromUserAccount(parseInt(tr.dataset.rowid));
         self.updateAccountStatus();
+        console.log(self.accountService.getAllDates());
       }
     });
   }
@@ -174,5 +192,16 @@ export class DashBoardComponent implements OnInit {
     if(this.accountService.getAllDates()[date].length === 0){
       delete this.accountService.getAllDates()[date];
     } 
+  }
+
+  addTransactionToUserAccount(transaction: any){
+    this.userAccount.transactions.push(transaction);
+    console.log(this.userAccount);
+  }
+
+  deleteTransactionFromUserAccount(rowId:Number){
+    this.userAccount.transactions = this.userAccount.transactions
+                                        .filter((trans:any) => trans.rowId != rowId);
+    console.log(this.userAccount);
   }
 }

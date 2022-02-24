@@ -49,6 +49,7 @@
             <div class="container">
                 <div>
                     <p *ngIf="">No transactions added</p>
+                    
                     <table #transactionContainer (mouseover)="showDeleteButton()" (mouseout)="clearDeleteButton()" class="mx-auto">
                         <tbody *ngFor="let item of accountService.getAllDates() | keyvalue : originalOrder">
                             <tr>
