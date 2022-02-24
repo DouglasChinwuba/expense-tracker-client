@@ -20,6 +20,7 @@ export class DashBoardComponent implements OnInit {
   userAccount : any = {};
   math = Math;
   transactionTypeHasError = true;
+  currentRowId = 0;
   @ViewChild('transactionContainer') transactionContainer!: ElementRef<HTMLTableSectionElement>;
 
   constructor(private http : HttpClient, 
@@ -33,7 +34,7 @@ export class DashBoardComponent implements OnInit {
         this.userAccount = res;
         // console.log(this.userAccount);
         this.populateTransDates();
-        // console.log(this.accountService.getAllDates())
+        console.log(this.accountService.getAllDates())
         this.updateAccountStatus();
       },err => {
         console.log(err);
@@ -41,40 +42,38 @@ export class DashBoardComponent implements OnInit {
     )
   }
 
-
+  /**
+   * Populates accountService allDates map of key:date and value:[] of transactions 
+   * with userAccount transactions
+   */
   populateTransDates(){
     for(let transaction of this.userAccount.transactions){
-      let formattedDate = new Date(transaction.date).toDateString();
+      let formattedDate = this.getDateString(transaction.date);
+      transaction.rowId = this.getNextRowId();
       this.accountService.getAllDates()[formattedDate] ??= [];
       this.accountService.getAllDates()[formattedDate].push(transaction);
     }
   }
 
+  getDateString(date: string){
+    return new Date(date).toDateString();
+  }
+
+  /**
+   * Adds new transaction to allDates map on add transaction button clicked
+   */
   addTransaction(){
      this.currentTransaction.date = new Date().toDateString();
+     this.currentTransaction.rowId = this.getNextRowId();
      this.accountService.getAllDates()[this.currentTransaction.date] ??= [];
      this.accountService.getAllDates()[this.currentTransaction.date].push(this.currentTransaction);
      this.updateAccountStatus();
      console.log(this.accountService.getAllDates());
   }
 
-  resetForm(form: NgForm){
-    this.currentTransaction = {};
-    form.reset();
-  }
-
-  validateTransactionType(value : string){
-    if(value === 'default'){
-      this.transactionTypeHasError = true;
-    }else{
-      this.transactionTypeHasError = false;
-    }
-  }
-
-  originalOrder = (a: KeyValue<string, Array<any>>, b: KeyValue<string,Array<any>>): number => {
-    return 0;
-  }
-
+  /**
+   * Updates accounts balance, income and expense status
+   */
   updateAccountStatus(){
     let allTransactions : Array<any> = Object.values(this.accountService.getAllDates());
 
@@ -94,17 +93,62 @@ export class DashBoardComponent implements OnInit {
     this.accountService.setBalance(totalIncome - totalExpense); 
   }
 
+  /**
+   * Get next row id
+   * @returns {Number} nextId
+   */
+  getNextRowId(){
+    let nextId = this.currentRowId;
+    this.currentRowId++;
+    return nextId;
+  }
+
+  resetForm(form: NgForm){
+    this.currentTransaction = {};
+    form.reset();
+  }
+
+  validateTransactionType(value : string){
+    if(value === 'default'){
+      this.transactionTypeHasError = true;
+    }else{
+      this.transactionTypeHasError = false;
+    }
+  }
+
+  originalOrder = (a: KeyValue<string, Array<any>>, b: KeyValue<string,Array<any>>): number => {
+    return 0;
+  }
+
+  /**
+   * Highlight transaction row and shows delete button on mouseover 
+   */
   showDeleteButton(){
     this.transactionContainer.nativeElement.addEventListener("mouseover", function(e:any){
       const transactionRow = e.target.closest("tr");
-      transactionRow.querySelector(".btn-delete").classList.remove("hidden")
+      transactionRow.style.backgroundColor = "#DC3545";
+      if(transactionRow.querySelector(".btn-delete")){
+        transactionRow.querySelector(".btn-delete").classList.remove("hidden")
+      }
     }); 
   }
 
+  
+  /**
+   * Unhighlight transaction row and hides delete button on mouseout 
+   */
   clearDeleteButton(){
     this.transactionContainer.nativeElement.addEventListener("mouseout", function(e:any){
       const transactionRow = e.target.closest("tr");
-      transactionRow.querySelector(".btn-delete").classList.add("hidden")
+      transactionRow.style.backgroundColor = "#FFFFFF";
+      if(transactionRow.querySelector(".btn-delete")){
+        transactionRow.querySelector(".btn-delete").classList.add("hidden")
+      }
     }); 
+  }
+
+
+  onDeleteBtnClicked(){
+
   }
 }

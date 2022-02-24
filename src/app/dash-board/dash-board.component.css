@@ -32,3 +32,13 @@ td{
 .btn-delete{
     cursor: pointer;
 }
+
+.trans-span-amount{
+    padding: 0px 5px;
+    float: right;
+}
+
+.trans-span-desc{
+    padding: 0px 5px;
+    float: left;
+}

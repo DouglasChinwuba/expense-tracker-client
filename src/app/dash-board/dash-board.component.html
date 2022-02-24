@@ -48,16 +48,20 @@
         <div class="col-xl-12 mx-auto">
             <div class="container">
                 <div>
+                    <p *ngIf="">No transactions added</p>
                     <table #transactionContainer (mouseover)="showDeleteButton()" (mouseout)="clearDeleteButton()" class="mx-auto">
                         <tbody *ngFor="let item of accountService.getAllDates() | keyvalue : originalOrder">
                             <tr>
                                 <td class="date" colspan="2">{{item.key | date:'fullDate'}}</td>
                             </tr>
-                            <tr class="transaction-row" *ngFor="let transaction of item.value">
-                                <td class="transaction"> 
-                                    <span>{{transaction.description}}</span>
-                                    <span *ngIf="transaction.type === 'Expense'" style="float:right">-${{math.abs(transaction.amount)}}</span>
-                                    <span *ngIf="transaction.type === 'Income'" style="float:right">${{transaction.amount}}</span>
+                            <tr class="transaction-row" *ngFor="let transaction of item.value" 
+                                [attr.data-rowId]="transaction.rowId"
+                                [attr.data-date]="getDateString(transaction.date)">
+                                <td class="transaction"
+                                    [ngStyle]="{borderRight: transaction.type === 'Expense' ? '5px solid #dc3545' : '5px solid #198754'}"> 
+                                    <span class="trans-span-desc">{{transaction.description}}</span>
+                                    <span *ngIf="transaction.type === 'Expense'" class="trans-span-amount">-${{math.abs(transaction.amount)}}</span>
+                                    <span *ngIf="transaction.type === 'Income'" class="trans-span-amount">${{transaction.amount}}</span>
                                 </td>
                                 <td class="btn-delete-td">
                                     <i class="bi-2x bi-x btn-delete hidden"></i>
