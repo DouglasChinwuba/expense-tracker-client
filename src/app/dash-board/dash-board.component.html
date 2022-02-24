@@ -7,7 +7,7 @@
     </div>
     <div class="mt-4 mb-3">
         <h6 class="text-center">YOUR BALANCE</h6>
-        <h1 class="text-center">${{accountService.getBalance()}}</h1>
+        <h1 class="text-center">${{accountService.getBalance() |  number : '1.2-2'}}</h1>
     </div>
 
     <div class="row">
@@ -19,7 +19,7 @@
                             <h4>Income</h4>
                         </div>
                         <div class="ms-auto">
-                            <h1>${{accountService.getIncome()}}</h1>
+                            <h1>${{accountService.getIncome() | number : '1.2-2'}}</h1>
                         </div>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                             <h4>Expense</h4>
                         </div>
                         <div class="ms-auto">
-                            <h1>${{accountService.getExpense()}}</h1>
+                            <h1>${{accountService.getExpense() | number : '1.2-2'}}</h1>
                         </div>
                     </div>
                 </div>
@@ -60,8 +60,8 @@
                                 <td class="transaction"
                                     [ngStyle]="{borderRight: transaction.type === 'Expense' ? '5px solid #dc3545' : '5px solid #198754'}"> 
                                     <span class="trans-span-desc">{{transaction.description}}</span>
-                                    <span *ngIf="transaction.type === 'Expense'" class="trans-span-amount">-${{math.abs(transaction.amount)}}</span>
-                                    <span *ngIf="transaction.type === 'Income'" class="trans-span-amount">${{transaction.amount}}</span>
+                                    <span *ngIf="transaction.type === 'Expense'" class="trans-span-amount">-${{math.abs(transaction.amount) | number : '1.2-2'}}</span>
+                                    <span *ngIf="transaction.type === 'Income'" class="trans-span-amount">${{transaction.amount | number : '1.2-2'}}</span>
                                 </td>
                                 <td class="btn-delete-td">
                                     <i class="bi-2x bi-x btn-delete hidden" (click)="deleteTransaction()"></i>

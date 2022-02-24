@@ -158,6 +158,7 @@ export class DashBoardComponent implements OnInit {
         const tr = e.target.closest("tr");
         console.log(parseInt(tr.dataset.rowid), tr.dataset.date);
         self.removeTransFromMap(parseInt(tr.dataset.rowid), tr.dataset.date);
+        self.updateAccountStatus();
       }
     });
   }
