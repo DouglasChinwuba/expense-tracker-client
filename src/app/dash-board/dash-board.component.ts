@@ -21,7 +21,7 @@ export class DashBoardComponent implements OnInit {
   math = Math;
   transactionTypeHasError = true;
   currentRowId = 0;
-  currentTransId = 0;
+  // currentTransId = 0;
   @ViewChild('transactionContainer') transactionContainer!: ElementRef<HTMLTableSectionElement>;
 
   constructor(private http : HttpClient, 
@@ -30,12 +30,14 @@ export class DashBoardComponent implements OnInit {
 
 
   ngOnInit(): void {
+    // this.userAccount = this.accountService.getUserAccount();
+    // this.populateTransDates();
+    // this.updateAccountStatus();
+
     this.http.get<any>(this.getAccountUrl).subscribe(
       res => {
         this.userAccount = res;
-        // console.log(this.userAccount);
         this.populateTransDates();
-        // console.log(this.accountService.getAllDates())
         this.updateAccountStatus();
       },err => {
         console.log(err);
@@ -48,14 +50,15 @@ export class DashBoardComponent implements OnInit {
    * with userAccount transactions
    */
   populateTransDates(){
+    if (this.userAccount.transactions.length === 0) return ; 
     for(let transaction of this.userAccount.transactions){
       let formattedDate = this.getDateString(transaction.date);
       transaction.rowId = this.getNextRowId();
       this.accountService.getAllDates()[formattedDate] ??= [];
       this.accountService.getAllDates()[formattedDate].push(transaction);
     }
-    this.currentTransId = this.userAccount.transactions[this.userAccount.transactions.length - 1].id;
-    this.currentTransId++;
+    // this.currentTransId = this.userAccount.transactions[this.userAccount.transactions.length - 1].id;
+    // this.currentTransId++;
   }
 
   /**
@@ -72,15 +75,17 @@ export class DashBoardComponent implements OnInit {
    * Adds new transaction to allDates map and userAccount on add transaction button clicked
    */
   addTransaction(){
-    this.currentTransaction.date = new Date().toISOString();
+    let date = new Date().toISOString();
+    this.currentTransaction.date = date.substring(0,date.length - 1);
     this.currentTransaction.rowId = this.getNextRowId();
-    this.currentTransaction.id = this.currentTransId;
+    // this.currentTransaction.id = this.currentTransId;
     let formattedDate = this.getDateString(this.currentTransaction.date);
     this.accountService.getAllDates()[formattedDate] ??= [];
     this.accountService.getAllDates()[formattedDate].push(this.currentTransaction);
     this.addTransactionToUserAccount(this.currentTransaction);
     this.updateAccountStatus();
-    this.currentTransId++;
+    // this.currentTransId++;
+    this.accountService.saveUserAccount(this.userAccount);
     console.log(this.accountService.getAllDates());
   }
 
@@ -176,6 +181,7 @@ export class DashBoardComponent implements OnInit {
         self.removeTransFromMap(parseInt(tr.dataset.rowid), tr.dataset.date);
         self.deleteTransactionFromUserAccount(parseInt(tr.dataset.rowid));
         self.updateAccountStatus();
+        self.accountService.saveUserAccount(self.userAccount);
         console.log(self.accountService.getAllDates());
       }
     });
