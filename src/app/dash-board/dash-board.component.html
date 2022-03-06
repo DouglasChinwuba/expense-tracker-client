@@ -56,7 +56,7 @@
                                 <td class="date" colspan="2">{{item.key | date:'fullDate'}}</td>
                             </tr>
                             <tr class="transaction-row" *ngFor="let transaction of item.value" 
-                                [attr.data-rowid]="transaction.rowId"
+                                [attr.data-id]="transaction.id"
                                 [attr.data-date]="getDateString(transaction.date)">
                                 <td class="transaction"
                                     [ngStyle]="{borderRight: transaction.type === 'Expense' ? '5px solid #dc3545' : '5px solid #198754'}"> 

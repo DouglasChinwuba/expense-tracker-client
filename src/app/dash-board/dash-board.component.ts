@@ -16,12 +16,13 @@ export class DashBoardComponent implements OnInit {
   user = this.storageService.getUser();
   getAccountUrl = "http://localhost:8081/account/" + this.user.username;
   saveTransactionUrl = "http://localhost:8081/save/" + this.user.username; 
+  deleteTransactionUrl = "http://localhost:8081/delete/";
   currentDate = new Date().toDateString();
   currentTransaction : any = {};
   userAccount : any = {};
   math = Math;
   transactionTypeHasError = true;
-  currentRowId = 0;
+  
   @ViewChild('transactionContainer') transactionContainer!: ElementRef<HTMLTableSectionElement>;
 
   constructor(private http : HttpClient, 
@@ -50,7 +51,6 @@ export class DashBoardComponent implements OnInit {
     if (this.userAccount.transactions.length === 0) return ; 
     for(let transaction of this.userAccount.transactions){
       let formattedDate = this.getDateString(transaction.date);
-      transaction.rowId = this.getNextRowId();
       this.accountService.getAllDates()[formattedDate] ??= [];
       this.accountService.getAllDates()[formattedDate].push(transaction);
     }
@@ -72,15 +72,14 @@ export class DashBoardComponent implements OnInit {
   addTransaction(){
     let date = new Date().toISOString();
     this.currentTransaction.date = date.substring(0,date.length - 1);
-    this.currentTransaction.rowId = this.getNextRowId();
     this.currentTransaction.id = 0;
-    let formattedDate = this.getDateString(this.currentTransaction.date);
-    this.accountService.getAllDates()[formattedDate] ??= [];
-    this.accountService.getAllDates()[formattedDate].push(this.currentTransaction);
     this.http.put(this.saveTransactionUrl, this.currentTransaction).subscribe(
       res => {
-        let savedTransaction = res;
+        let savedTransaction : any = res;
         this.addTransactionToUserAccount(savedTransaction);
+        let formattedDate = this.getDateString(savedTransaction.date);
+        this.accountService.getAllDates()[formattedDate] ??= [];
+        this.accountService.getAllDates()[formattedDate].push(savedTransaction);
         this.updateAccountStatus();
         console.log(this.accountService.getAllDates());
       },err => {
@@ -89,15 +88,9 @@ export class DashBoardComponent implements OnInit {
     );
   }
 
-
-  /**
-   * Get next row id
-   * @returns {Number} nextId
-   */
-   getNextRowId(){
-    let nextId = this.currentRowId;
-    this.currentRowId++;
-    return nextId;
+  addTransactionToUserAccount(transaction: any){
+    this.userAccount.transactions.push(transaction);
+    console.log(this.userAccount);
   }
 
   /**
@@ -177,11 +170,15 @@ export class DashBoardComponent implements OnInit {
     this.transactionContainer.nativeElement.addEventListener("click", function(e:any){
       if(e.target.classList.contains("btn-delete") || e.target.classList.contains("btn-delete-td")){
         const tr = e.target.closest("tr");
-        self.removeTransFromMap(parseInt(tr.dataset.rowid), tr.dataset.date);
-        self.deleteTransactionFromUserAccount(parseInt(tr.dataset.rowid));
-        self.updateAccountStatus();
-        // self.accountService.saveUserAccount(self.userAccount);
-        console.log(self.accountService.getAllDates());
+        self.removeTransFromMap(parseInt(tr.dataset.id), tr.dataset.date);
+        self.http.delete(self.deleteTransactionUrl+tr.dataset.id).subscribe(
+          res => {
+            console.log(res);
+            self.updateAccountStatus();
+          },err => {
+            console.log(err);
+          }
+        );
       }
     });
   }
@@ -189,23 +186,12 @@ export class DashBoardComponent implements OnInit {
   /**
    * Delete transaction from map of date and transaction 
    */
-  removeTransFromMap(rowid:Number, date:string){
+  removeTransFromMap(id:Number, date:string){
     this.accountService.getAllDates()[date] = this.accountService.getAllDates()[date]
-                                                  .filter(trans => trans.rowId != rowid);
+                                                  .filter(trans => trans.id != id);
 
     if(this.accountService.getAllDates()[date].length === 0){
       delete this.accountService.getAllDates()[date];
     } 
-  }
-
-  addTransactionToUserAccount(transaction: any){
-    this.userAccount.transactions.push(transaction);
-    console.log(this.userAccount);
-  }
-
-  deleteTransactionFromUserAccount(rowId:Number){
-    this.userAccount.transactions = this.userAccount.transactions
-                                        .filter((trans:any) => trans.rowId != rowId);
-    console.log(this.userAccount);
   }
 }
