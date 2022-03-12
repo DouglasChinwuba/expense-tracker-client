@@ -48,7 +48,7 @@
         <div class="col-xl-12 mx-auto">
             <div class="container">
                 <div>
-                    <h4 class="text-center" *ngIf="(accountService.getAllDates() | json) === ({} | json)">No transactions added</h4>
+                    <h5 class="text-center" *ngIf="(accountService.getAllDates() | json) === ({} | json)">No transactions added</h5>
                     
                     <table #transactionContainer (mouseover)="showDeleteButton()" (mouseout)="clearDeleteButton()" class="mx-auto">
                         <tbody *ngFor="let item of accountService.getAllDates() | keyvalue : originalOrder">

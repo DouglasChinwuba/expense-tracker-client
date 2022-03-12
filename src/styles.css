@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
 body{
     font-family: 'Open Sans', sans-serif;
     background-color: #F5F7FA
@@ -9,5 +11,3 @@ body{
     min-height: 300px;
     /* border: 1px solid #333  */
 }
-
-

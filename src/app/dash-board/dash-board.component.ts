@@ -88,6 +88,10 @@ export class DashBoardComponent implements OnInit {
     );
   }
 
+  /**
+   * Add transaction to user account
+   * @param transaction 
+   */
   addTransactionToUserAccount(transaction: any){
     this.userAccount.transactions.push(transaction);
     console.log(this.userAccount);
@@ -124,6 +128,11 @@ export class DashBoardComponent implements OnInit {
     form.reset();
   }
 
+
+  /**
+   * Validates transaction type
+   * @param {string} value 
+   */
   validateTransactionType(value : string){
     if(value === 'default'){
       this.transactionTypeHasError = true;
@@ -185,6 +194,8 @@ export class DashBoardComponent implements OnInit {
 
   /**
    * Delete transaction from map of date and transaction 
+   * @param {Number} id 
+   * @param {string} date 
    */
   removeTransFromMap(id:Number, date:string){
     this.accountService.getAllDates()[date] = this.accountService.getAllDates()[date]
