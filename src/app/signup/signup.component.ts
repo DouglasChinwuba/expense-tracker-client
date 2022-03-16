@@ -10,21 +10,22 @@ import { AuthService } from '../services/auth.service';
 export class SignupComponent implements OnInit {
 
   registerUserData:any = {};
+  signupSuccessful: any;
 
   constructor(private auth: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+    this.signupSuccessful = false;
   }
 
   registerUser(){
     this.auth.registerUser(this.registerUserData)
       .subscribe(
         res => {
-          // console.log(res);
-          this.router.navigate(['/login'])
+          this.signupSuccessful = true;
+          // this.router.navigate(['/login'])
         },
         err => console.log(err)
       )
   }
-
 }
