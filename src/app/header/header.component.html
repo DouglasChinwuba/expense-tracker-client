@@ -8,8 +8,14 @@
             <ul class="nav navbar-nav ms-auto">
                 <li>
                     <div class="form-check form-switch p-2">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                        <label class="form-check-label text-white-50">Enable notification</label>
+                        <input 
+                            class="form-check-input" 
+                            type="checkbox" 
+                            role="switch" 
+                            id="flexSwitchCheckDefault"
+                            [checked]="accountService.userAccount.notificationEnabled"
+                            (change)="setNotification($event)">
+                        <label class="form-check-label text-white">Enable notification</label>
                     </div>
                 </li>
 

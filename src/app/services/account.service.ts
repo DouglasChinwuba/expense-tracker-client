@@ -1,6 +1,4 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +9,7 @@ export class AccountService {
   private income : number = 0.00;
   private expense : number = 0.00;
   private allDates : {[key: string] : Array<any> } = {};
+  userAccount : any = {};
 
   constructor() { }
 

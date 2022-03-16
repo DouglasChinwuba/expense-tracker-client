@@ -19,7 +19,6 @@ export class DashBoardComponent implements OnInit {
   deleteTransactionUrl = "http://localhost:8081/delete/";
   currentDate = new Date().toDateString();
   currentTransaction : any = {};
-  userAccount : any = {};
   math = Math;
   transactionTypeHasError = true;
   
@@ -33,8 +32,8 @@ export class DashBoardComponent implements OnInit {
   ngOnInit(): void {
     this.http.get<any>(this.getAccountUrl).subscribe(
       res => {
-        this.userAccount = res;
-        console.log(this.userAccount);
+        this.accountService.userAccount = res;
+        console.log(this.accountService.userAccount);
         this.populateTransDates();
         this.updateAccountStatus();
       }, err => {
@@ -48,8 +47,8 @@ export class DashBoardComponent implements OnInit {
    * with userAccount transactions
    */
   populateTransDates(){
-    if (this.userAccount.transactions.length === 0) return ; 
-    for(let transaction of this.userAccount.transactions){
+    if (this.accountService.userAccount.transactions.length === 0) return ; 
+    for(let transaction of this.accountService.userAccount.transactions){
       let formattedDate = this.getDateString(transaction.date);
       this.accountService.getAllDates()[formattedDate] ??= [];
       this.accountService.getAllDates()[formattedDate].push(transaction);
@@ -93,8 +92,8 @@ export class DashBoardComponent implements OnInit {
    * @param transaction 
    */
   addTransactionToUserAccount(transaction: any){
-    this.userAccount.transactions.push(transaction);
-    console.log(this.userAccount);
+    this.accountService.userAccount.transactions.push(transaction);
+    console.log(this.accountService.userAccount);
   }
 
   /**
